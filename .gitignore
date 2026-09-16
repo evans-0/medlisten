@@ -1,0 +1,17 @@
+node_modules/
+.venv/
+__pycache__/
+*.log
+logs/
+dist/
+dist-ssr/
+.env
+.env.local
+.mongo-data/
+*.DS_Store
+
+# Leftover local test artifacts, not referenced by any code.
+page0.png
+backend/test_prescription.png
+backend/eng.traineddata
+backend/hin.traineddata

@@ -1,0 +1,82 @@
+[
+  {
+    "condition": "Headache",
+    "protocol": "CLINICAL GUIDELINE FOR HEADACHE: Assess for 'red flag' symptoms. Ask if it had a sudden, explosive onset (thunderclap). Ask about associated neck stiffness, fever, or visual changes. Ask if it is worse in the morning or wakes them from sleep."
+  },
+  {
+    "condition": "Chest Pain",
+    "protocol": "CLINICAL GUIDELINE FOR CHEST PAIN: Rule out cardiac emergencies. Ask if the pain radiates to the jaw, neck, or left arm. Ask about shortness of breath, sweating (diaphoresis), or nausea. Ask if the pain worsens with physical exertion."
+  },
+  {
+    "condition": "Abdominal Pain",
+    "protocol": "CLINICAL GUIDELINE FOR ABDOMINAL PAIN: Determine exact location/quadrant. Ask if pain is sharp or dull, and if it moves (radiates) to the back or groin. Ask about vomiting (especially blood/coffee grounds), bloody or black stools, and if it worsens after eating."
+  },
+  {
+    "condition": "Fever",
+    "protocol": "CLINICAL GUIDELINE FOR FEVER: Ask duration and maximum temperature. Ask about associated chills, night sweats, or unexplained weight loss. Check for localized symptoms like a new cough, painful urination, or a skin rash."
+  },
+  {
+    "condition": "Joint Pain",
+    "protocol": "CLINICAL GUIDELINE FOR JOINT PAIN: Ask if the pain is in one specific joint or multiple. Ask about morning stiffness and duration. Check for swelling, redness, or warmth over the joint (red flag for septic arthritis). Ask about recent trauma or systemic fever."
+  },
+  {
+    "condition": "Back Pain",
+    "protocol": "CLINICAL GUIDELINE FOR BACK PAIN: Rule out cauda equina and infection. Ask about numbness/tingling in the groin/saddle area. Ask about any loss of bowel or bladder control. Ask if there is weakness in the legs or if the pain wakes them at night."
+  },
+  {
+    "condition": "Shortness of Breath",
+    "protocol": "CLINICAL GUIDELINE FOR DYSPNEA: Assess severity. Ask if they can speak in full sentences without catching their breath. Ask if it is worse when lying flat (orthopnea). Ask about associated chest pain, leg swelling, or history of asthma/COPD."
+  },
+  {
+    "condition": "Dizziness or Syncope",
+    "protocol": "CLINICAL GUIDELINE FOR DIZZINESS/FAINTING: Clarify if it is a spinning sensation (vertigo) or lightheadedness/fainting. If they fainted, ask if there was warning beforehand, and if they had chest pain or palpitations before passing out."
+  },
+  {
+    "condition": "Cough",
+    "protocol": "CLINICAL GUIDELINE FOR COUGH: Ask about duration (more or less than 3 weeks). Ask if they are coughing up phlegm, and specifically ask if they have coughed up any blood (hemoptysis). Ask about associated night sweats or weight loss (red flags for TB)."
+  },
+  {
+    "condition": "Vomiting or Nausea",
+    "protocol": "CLINICAL GUIDELINE FOR VOMITING: Ask how many times they have vomited and if they can keep oral fluids down. Ask if there is any blood or dark 'coffee ground' material in the vomit. Ask about associated severe headache or severe abdominal pain."
+  },
+  {
+    "condition": "Diarrhea",
+    "protocol": "CLINICAL GUIDELINE FOR DIARRHEA: Ask about the frequency of stools. CRITICAL: Ask if there is any visible blood or black tarry appearance in the stool. Ask about signs of dehydration (dark urine, severe thirst) and recent antibiotic use."
+  },
+  {
+    "condition": "Palpitations",
+    "protocol": "CLINICAL GUIDELINE FOR PALPITATIONS: Ask if the heartbeat feels fast, irregular, or skipped. Ask about associated chest pain, shortness of breath, or episodes of fainting/near-fainting. Ask about excessive caffeine, stress, or thyroid issues."
+  },
+  {
+    "condition": "Fatigue or Weakness",
+    "protocol": "CLINICAL GUIDELINE FOR WEAKNESS: Differentiate general fatigue from focal weakness. Ask if one specific arm, leg, or side of the face feels weak or numb (red flag for stroke). Ask about unexplained weight loss or sudden onset."
+  },
+  {
+    "condition": "Vision Changes",
+    "protocol": "CLINICAL GUIDELINE FOR VISION: Ask if the vision loss/change is in one eye or both. Ask if it was sudden or gradual. Ask about associated eye pain, flashes of light, or a sensation of a 'curtain' coming down over their vision."
+  },
+  {
+    "condition": "Urinary Symptoms",
+    "protocol": "CLINICAL GUIDELINE FOR DYSURIA: Ask about pain or burning during urination. Ask if there is visible blood in the urine (hematuria). Ask about associated back/flank pain, high fever, or nausea (red flags for kidney infection)."
+  },
+  {
+    "condition": "Skin Rash",
+    "protocol": "CLINICAL GUIDELINE FOR RASH: Ask if the rash is itchy, painful, or spreading rapidly. Ask if the rash disappears (blanches) when pressed. Ask about mucosal involvement (blisters in the mouth/eyes) and associated systemic fever."
+  },
+  {
+    "condition": "Confusion or Altered Mental Status",
+    "protocol": "CLINICAL GUIDELINE FOR CONFUSION: Ask the accompanying person when the confusion started. Ask if there was any recent head trauma, fever, or history of diabetes/hypoglycemia. Sudden onset requires urgent triage."
+  },
+  {
+    "condition": "Sore Throat",
+    "protocol": "CLINICAL GUIDELINE FOR SORE THROAT: Assess airway risk. Ask if they are having difficulty swallowing their own saliva or are drooling. Ask if their voice has changed to a muffled 'hot potato' sound or if they have noisy breathing (stridor)."
+  },
+  {
+    "condition": "Pediatric Fever",
+    "protocol": "CLINICAL GUIDELINE FOR PEDIATRIC FEVER: Ask the exact age of the child (fever in infants <3 months is a red flag). Ask if the child is unusually lethargic, difficult to wake, or inconsolable. Ask about any rashes that do not fade when pressed."
+  },
+  {
+    "condition": "Trauma or Injury",
+    "protocol": "CLINICAL GUIDELINE FOR TRAUMA: Ask about the mechanism of injury. If head trauma, ask if there was any loss of consciousness, vomiting, or memory loss. Check if they take any blood thinners."
+  }
+]

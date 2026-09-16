@@ -1,0 +1,1642 @@
+:root {
+  --color-bg: #f6f4f2;
+  --color-surface: #ffffff;
+  --color-primary: #b23a2e;
+  --color-primary-dark: #8f2e24;
+  --color-navy: #1b2a45;
+  --color-text: #1f2937;
+  --color-muted: #6b7280;
+  --color-border: #e5e0dc;
+  --color-danger: #dc2626;
+  color-scheme: light;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  overflow-x: hidden;
+}
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+  overflow-wrap: break-word;
+  overflow-x: hidden;
+}
+
+h1, h2 {
+  margin-top: 0;
+}
+
+.centered-page {
+  min-height: 100vh;
+  /* 100vh on a phone/tablet browser includes the area behind its address
+     bar, which can be taller than what's actually visible — causing a
+     pointless scroll on a page that would otherwise fit exactly.
+     100dvh tracks the real visible viewport; browsers that don't support
+     it just ignore this line and keep the 100vh above. */
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  animation: fadeInUp 0.35s ease;
+}
+
+.home-card {
+  max-width: 720px;
+  width: 100%;
+  text-align: center;
+}
+
+.subtitle {
+  color: var(--color-muted);
+  margin-top: -8px;
+}
+
+.role-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+@media (max-width: 600px) {
+  .role-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .brand-logo {
+    font-size: 1.1em;
+  }
+
+  .navbar-user {
+    flex-wrap: wrap;
+  }
+}
+
+.role-card {
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  padding: 20px;
+  text-align: left;
+  transition: box-shadow 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+}
+
+.role-card:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+  border-color: #cbd5e1;
+}
+
+.role-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.role-card-select {
+  background: var(--color-surface);
+  font: inherit;
+  cursor: pointer;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.role-card-select h2 {
+  margin: 0;
+}
+
+.role-card-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--color-bg);
+  color: var(--color-primary);
+}
+
+.role-card-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.auth-card {
+  max-width: 420px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.auth-logo {
+  align-self: center;
+  text-decoration: none;
+  margin-bottom: 4px;
+}
+
+.auth-logo .brand-logo {
+  font-size: 1.3em;
+}
+
+.auth-card label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 14px;
+  color: var(--color-muted);
+}
+
+/* A requirement/explanation shown up front, next to the field it applies
+   to — so a patient learns e.g. the password rule before typing and
+   failing, not from a browser's own validation popup after submitting. */
+.field-hint {
+  font-size: 12px;
+  color: var(--color-muted);
+  font-weight: 400;
+}
+
+input, select, textarea {
+  font: inherit;
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  background: white;
+  color: var(--color-text);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(178, 58, 46, 0.15);
+}
+
+input:disabled, select:disabled, textarea:disabled {
+  background: #f1f5f9;
+  color: var(--color-muted);
+}
+
+.password-field {
+  position: relative;
+  display: flex;
+}
+
+.password-field input {
+  padding-right: 38px;
+}
+
+.password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 4px;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--color-muted);
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.password-toggle svg {
+  width: 18px;
+  height: 18px;
+}
+
+.password-toggle:hover {
+  color: var(--color-primary);
+  background: rgba(178, 58, 46, 0.08);
+}
+
+/* The native file input's own "Choose file" button is a UA-styled control
+   that font/color/border don't reach — ::file-selector-button (and its
+   older WebKit alias) is the one hook browsers give for restyling it. */
+input[type="file"] {
+  padding: 6px;
+}
+
+input[type="file"]::file-selector-button,
+input[type="file"]::-webkit-file-upload-button {
+  font: inherit;
+  font-weight: 600;
+  padding: 7px 14px;
+  margin-right: 10px;
+  border: none;
+  border-radius: 6px;
+  background: var(--color-primary);
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+input[type="file"]::file-selector-button:hover,
+input[type="file"]::-webkit-file-upload-button:hover {
+  background: var(--color-primary-dark);
+}
+
+.btn {
+  border: none;
+  border-radius: 6px;
+  padding: 9px 16px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease,
+    transform 0.1s ease, box-shadow 0.15s ease;
+}
+
+.btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.btn:active:not(:disabled) {
+  transform: translateY(0) scale(0.97);
+  transition-duration: 0.05s;
+}
+
+.btn-primary {
+  background: var(--color-primary);
+  color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: var(--color-primary-dark);
+  box-shadow: 0 4px 12px rgba(178, 58, 46, 0.25);
+}
+
+.btn-secondary {
+  background: #e2e8f0;
+  color: var(--color-text);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: #cbd5e1;
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--color-primary);
+  border: 1px solid var(--color-primary);
+}
+
+.btn-ghost:hover:not(:disabled) {
+  background: rgba(178, 58, 46, 0.08);
+}
+
+.btn-danger {
+  background: transparent;
+  color: var(--color-danger);
+  border: 1px solid var(--color-danger);
+}
+
+.btn-danger:hover:not(:disabled) {
+  background: rgba(220, 38, 38, 0.08);
+}
+
+.btn-danger-solid {
+  background: var(--color-danger);
+  color: white;
+}
+
+.btn-danger-solid:hover:not(:disabled) {
+  background: #b91c1c;
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.form-footer {
+  font-size: 14px;
+  text-align: center;
+  color: var(--color-muted);
+  margin: 0;
+}
+
+.error-banner {
+  background: #fef2f2;
+  color: var(--color-danger);
+  border: 1px solid #fecaca;
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 14px;
+  animation: shake 0.4s ease;
+}
+
+.info-banner {
+  background: #fbeeec;
+  color: var(--color-primary-dark);
+  border: 1px solid #e8bcb2;
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 14px;
+  margin-bottom: 12px;
+  animation: popIn 0.25s ease;
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  padding: 14px 24px;
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.navbar-brand {
+  font-size: 18px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.brand-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.15em;
+  font-family: 'Lora', Georgia, serif;
+  font-weight: 700;
+  font-size: 1.3em;
+  line-height: 1;
+}
+
+.brand-logo-med {
+  color: var(--color-primary);
+}
+
+.brand-logo-listen {
+  color: var(--color-navy);
+}
+
+.brand-logo-cross {
+  color: var(--color-primary);
+  flex-shrink: 0;
+}
+
+.navbar-user {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.navbar-user-name {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.navbar-role-icon {
+  display: inline-flex;
+  color: var(--color-primary);
+}
+
+.navbar-role-icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.navbar-icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  background: #f1f5f9;
+  color: var(--color-primary-dark);
+  text-decoration: none;
+  transition: background-color 0.15s ease, transform 0.15s ease;
+}
+
+.navbar-icon-btn:hover {
+  background: #e2e8f0;
+  transform: scale(1.08);
+}
+
+.navbar-icon-btn:active {
+  transform: scale(0.95);
+}
+
+.back-link {
+  display: inline-block;
+  color: var(--color-muted);
+  text-decoration: none;
+  font-size: 14px;
+  transition: color 0.15s ease, transform 0.15s ease;
+}
+
+.back-link:hover {
+  color: var(--color-text);
+  transform: translateX(-2px);
+}
+
+.dashboard {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* The chat page specifically wants the full available width (its two-column
+   transcript + captured-info layout benefits from the room) — every other
+   dashboard page keeps the 900px cap above, which suits their more
+   text-heavy, single-column content better. */
+.dashboard:has(> .chat-page-card) {
+  max-width: none;
+}
+
+.dashboard > * {
+  min-width: 0;
+}
+
+.dashboard > *:nth-child(1) { animation-delay: 0s; }
+.dashboard > *:nth-child(2) { animation-delay: 0.05s; }
+.dashboard > *:nth-child(3) { animation-delay: 0.1s; }
+.dashboard > *:nth-child(4) { animation-delay: 0.15s; }
+
+.dashboard-shell {
+  display: flex;
+  align-items: flex-start;
+  min-height: calc(100vh - 61px);
+}
+
+.dashboard-main {
+  flex: 1;
+  margin: 0;
+  min-width: 0;
+}
+
+.sidebar {
+  width: 220px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 61px;
+  align-self: flex-start;
+  background: var(--color-surface);
+  border-right: 1px solid var(--color-border);
+  padding: 16px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 20px;
+  color: var(--color-muted);
+  text-decoration: none;
+  font-size: 14px;
+  border-left: 3px solid transparent;
+  transition: background-color 0.15s ease, color 0.15s ease, border-left-color 0.15s ease;
+}
+
+.sidebar-item:hover {
+  background: #f1f5f9;
+  color: var(--color-text);
+}
+
+.sidebar-item-active {
+  background: #fbeeec;
+  color: var(--color-primary-dark);
+  border-left-color: var(--color-primary);
+  font-weight: 600;
+}
+
+.sidebar-icon svg {
+  transition: transform 0.15s ease;
+}
+
+.sidebar-item:hover .sidebar-icon svg {
+  transform: scale(1.1);
+}
+
+.sidebar-icon {
+  display: flex;
+  flex-shrink: 0;
+}
+
+@media (max-width: 720px) {
+  .dashboard-shell {
+    flex-direction: column;
+  }
+
+  .dashboard-main {
+    width: 100%;
+  }
+
+  .sidebar {
+    width: 100%;
+    flex-direction: row;
+    overflow-x: auto;
+    position: static;
+    border-right: none;
+    border-bottom: 1px solid var(--color-border);
+    padding: 8px;
+  }
+
+  .sidebar-item {
+    border-left: none;
+    border-bottom: 3px solid transparent;
+    white-space: nowrap;
+  }
+
+  .sidebar-item-active {
+    border-left-color: transparent;
+    border-bottom-color: var(--color-primary);
+  }
+}
+
+.profile-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+}
+
+.profile-grid .label {
+  display: block;
+  font-size: 12px;
+  color: var(--color-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.history-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.history-summary {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-left: 3px solid var(--color-primary);
+  border-radius: 8px;
+  padding: 14px 16px;
+  margin-bottom: 16px;
+  animation: fadeIn 0.2s ease;
+}
+
+.history-summary h4 {
+  margin: 0 0 6px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-primary);
+}
+
+.history-summary p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--color-text);
+}
+
+.card-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.card-header-row h2 {
+  margin: 0;
+}
+
+.form-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.flag-form {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--color-border);
+  animation: fadeIn 0.2s ease;
+}
+
+.flag-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 13px;
+  color: var(--color-muted);
+  margin-bottom: 8px;
+}
+
+.history-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 14px;
+  color: var(--color-muted);
+}
+
+.upload-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+.upload-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 14px;
+  color: var(--color-muted);
+}
+
+.upload-form .field-group {
+  flex: 1 1 100%;
+}
+
+.search-form {
+  display: flex;
+  gap: 12px;
+}
+
+.search-form input {
+  flex: 1;
+}
+
+.document-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.document-item {
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 12px;
+  transition: box-shadow 0.15s ease, border-color 0.15s ease;
+  animation: fadeInUp 0.25s ease;
+}
+
+.document-item:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  border-color: #cbd5e1;
+}
+
+.document-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.document-info {
+  min-width: 0;
+  flex: 1 1 200px;
+}
+
+.document-name {
+  display: block;
+  overflow-wrap: anywhere;
+}
+
+.document-meta {
+  font-size: 12px;
+  color: var(--color-muted);
+  margin-top: 4px;
+}
+
+.document-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.badge {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  background: #e0f2fe;
+  color: #0369a1;
+}
+
+.ocr-text {
+  margin-top: 12px;
+  background: #f8fafc;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  padding: 12px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: 13px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.empty-state {
+  color: var(--color-muted);
+  font-size: 14px;
+}
+
+.badge-abnormal {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  background: #fee2e2;
+  color: var(--color-danger);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.extraction-details {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+  animation: fadeIn 0.2s ease both;
+}
+
+.extraction-details > * {
+  min-width: 0;
+}
+
+.mode-badge {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.mode-badge svg {
+  width: 15px;
+  height: 15px;
+}
+
+.mode-badge-general {
+  background: #eef2f7;
+  color: #475569;
+}
+
+.mode-badge-ayush {
+  background: #eafaf0;
+  color: #1a7a4c;
+}
+
+.review-banner {
+  background: #fffbeb;
+  color: #92400e;
+  border: 1px solid #fde68a;
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 14px;
+  font-weight: 600;
+  animation: fadeIn 0.2s ease both;
+}
+
+.urgent-banner {
+  animation: fadeIn 0.2s ease both, urgentPulse 2s ease-in-out infinite;
+}
+
+.extraction-summary-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: #f1f5f9;
+  color: var(--color-text);
+  font-size: 12px;
+  text-transform: capitalize;
+}
+
+.extraction-section h4 {
+  margin: 0 0 6px;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-muted);
+}
+
+.extraction-section ul {
+  margin: 0;
+  padding-left: 20px;
+  font-size: 14px;
+}
+
+.vitals-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-size: 14px;
+}
+
+.vitals-chip {
+  background: #f8fafc;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  padding: 4px 10px;
+}
+
+/* Standard adult reference ranges, classified client-side — see
+   ExtractionDetails.jsx's classifyBloodPressure/classifyPulse comment for
+   why this is safe to hardcode here unlike investigations' abnormal flag. */
+.vitals-chip-high {
+  background: #fef2f2;
+  border-color: #fecaca;
+}
+
+.vitals-chip-low {
+  background: #fffbeb;
+  border-color: #fde68a;
+}
+
+.vitals-status-label {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 1px 7px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.vitals-chip-high .vitals-status-label {
+  background: #fee2e2;
+  color: var(--color-danger);
+}
+
+.vitals-chip-low .vitals-status-label {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.table-scroll {
+  overflow-x: auto;
+}
+
+.extraction-table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.extraction-table th {
+  text-align: left;
+  font-size: 12px;
+  color: var(--color-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.extraction-table td {
+  padding: 6px 8px;
+  border-bottom: 1px solid #f1f5f9;
+  overflow-wrap: anywhere;
+}
+
+.extraction-table tr.row-abnormal td {
+  background: #fef2f2;
+}
+
+.confidence-tag {
+  display: inline-block;
+  margin-left: 6px;
+  font-size: 11px;
+  padding: 1px 6px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.confidence-tag.confidence-low {
+  background: #fee2e2;
+  color: var(--color-danger);
+}
+
+.confidence-tag.confidence-medium {
+  background: #fef9c3;
+  color: #92400e;
+}
+
+.chat-intake {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.field-group-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-muted);
+}
+
+.voice-select-row {
+  display: flex;
+  gap: 8px;
+}
+
+.voice-select-row .voice-select {
+  flex: 1;
+  min-width: 0;
+}
+
+.voice-select-row .btn {
+  flex: none;
+  white-space: nowrap;
+}
+
+.option-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 8px;
+}
+
+.option-grid-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.option-grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.option-grid-lang {
+  grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
+}
+
+.option-card {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1.5px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+  font-size: 13px;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background-color 0.15s ease, transform 0.1s ease;
+}
+
+.option-card:hover {
+  border-color: var(--color-primary);
+  transform: translateY(-1px);
+}
+
+.option-card-active {
+  border-color: var(--color-primary);
+  background: #fbeeec;
+  color: var(--color-primary-dark);
+  font-weight: 600;
+}
+
+.option-card-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  color: var(--color-primary);
+}
+
+.option-card-icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.option-card-label {
+  min-width: 0;
+  flex: 1;
+  overflow-wrap: anywhere;
+  line-height: 1.25;
+}
+
+.icon-select {
+  position: relative;
+}
+
+.icon-select-trigger {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  background: white;
+  color: var(--color-text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.icon-select-trigger:hover {
+  border-color: var(--color-primary);
+}
+
+.icon-select-trigger[aria-expanded="true"] {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(178, 58, 46, 0.15);
+}
+
+.icon-select-label {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.icon-select-caret {
+  flex-shrink: 0;
+  color: var(--color-muted);
+  transition: transform 0.15s ease;
+  font-size: 12px;
+}
+
+.icon-select-caret-open {
+  transform: rotate(180deg);
+}
+
+.icon-select-list {
+  position: absolute;
+  z-index: 30;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  margin: 0;
+  padding: 4px;
+  list-style: none;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  max-height: 260px;
+  overflow-y: auto;
+  animation: fadeInUp 0.15s ease;
+}
+
+.icon-select-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.icon-select-option:hover {
+  background: #f6f4f2;
+}
+
+.icon-select-option-active {
+  background: #fbeeec;
+  color: var(--color-primary-dark);
+  font-weight: 600;
+}
+
+.icon-select-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  color: var(--color-primary);
+}
+
+.icon-select-icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.lang-badge {
+  border-radius: 999px;
+  background: var(--color-bg);
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.option-card-active .lang-badge,
+.icon-select-option-active .lang-badge {
+  background: var(--color-primary);
+  color: white;
+}
+
+.chat-layout {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 16px;
+  min-width: 0;
+}
+
+.chat-layout > * {
+  min-width: 0;
+}
+
+@media (max-width: 720px) {
+  .chat-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.chat-transcript {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 360px;
+  overflow-y: auto;
+  padding: 12px;
+  background: #f8fafc;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+}
+
+.chat-transcript-readonly {
+  max-height: 280px;
+}
+
+.chat-bubble {
+  max-width: 85%;
+  padding: 8px 12px;
+  border-radius: 12px;
+  font-size: 14px;
+  line-height: 1.4;
+  animation: fadeInUp 0.25s ease;
+}
+
+.chat-bubble-assistant {
+  align-self: flex-start;
+  background: #e0f2fe;
+  color: #0c4a6e;
+  border-bottom-left-radius: 2px;
+}
+
+.chat-bubble-patient {
+  align-self: flex-end;
+  background: var(--color-primary);
+  color: white;
+  border-bottom-right-radius: 2px;
+}
+
+.chat-bubble-thinking {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 12px 14px;
+}
+
+.typing-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #0c4a6e;
+  opacity: 0.5;
+  animation: typingBounce 1.1s ease-in-out infinite;
+}
+
+.typing-dot:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.typing-dot:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+@keyframes typingBounce {
+  0%, 60%, 100% {
+    transform: translateY(0);
+    opacity: 0.5;
+  }
+  30% {
+    transform: translateY(-4px);
+    opacity: 1;
+  }
+}
+
+.chat-live-panel {
+  background: #f8fafc;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 14px;
+  max-height: 360px;
+  overflow-y: auto;
+}
+
+.chat-live-panel h4 {
+  margin: 0 0 8px;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-muted);
+}
+
+.live-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.live-field-row {
+  font-size: 13px;
+}
+
+.chat-input-row {
+  display: flex;
+  gap: 8px;
+}
+
+.chat-input-row input {
+  flex: 1;
+}
+
+.mic-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+  background: white;
+  color: var(--color-primary);
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+}
+
+.mic-btn:hover:not(:disabled) {
+  background: #f1f5f9;
+  transform: translateY(-1px);
+}
+
+.mic-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.mic-btn-recording {
+  background: var(--color-danger);
+  border-color: var(--color-danger);
+  color: white;
+  animation: urgentPulse 1.4s ease-in-out infinite;
+}
+
+.chat-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.feedback-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: 14px;
+  color: var(--color-muted);
+}
+
+.chat-end-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 4px;
+}
+
+.btn-small {
+  padding: 5px 12px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.urgent-banner {
+  background: #fef2f2;
+  color: var(--color-danger);
+  border-color: #fecaca;
+}
+
+.chip.triage-emergency {
+  background: #fee2e2;
+  color: var(--color-danger);
+  font-weight: 600;
+}
+
+.chip.triage-urgent {
+  background: #ffedd5;
+  color: #9a3412;
+  font-weight: 600;
+}
+
+.chip.triage-soon {
+  background: #fef9c3;
+  color: #854d0e;
+}
+
+.chip.triage-routine {
+  background: #f1f5f9;
+  color: var(--color-muted);
+}
+
+.visit-detail {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  animation: fadeIn 0.2s ease both;
+}
+
+.confirm-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 1000;
+  animation: fadeIn 0.15s ease both;
+}
+
+.confirm-card {
+  background: var(--color-surface);
+  border-radius: 12px;
+  padding: 24px;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.2);
+  animation: fadeInUp 0.2s ease;
+}
+
+.confirm-card h3 {
+  margin: 0 0 8px;
+  font-size: 18px;
+}
+
+.confirm-card p {
+  margin: 0;
+  color: var(--color-muted);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.confirm-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+/* Settings page */
+
+.settings-toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.settings-toggle-row strong {
+  display: block;
+  font-size: 14px;
+}
+
+.settings-toggle-hint {
+  display: block;
+  font-size: 13px;
+  color: var(--color-muted);
+  margin-top: 2px;
+}
+
+.settings-toggle-row input[type='checkbox'] {
+  width: 40px;
+  height: 22px;
+  flex-shrink: 0;
+  accent-color: var(--color-primary);
+  cursor: pointer;
+}
+
+/* Accessibility: text size — applied to <html> by AccessibilityContext.
+   Scales the root rem unit, so anything sized in rem/em grows with it;
+   px-sized icons/borders deliberately don't scale. */
+:root[data-font-size='large'] {
+  font-size: 118%;
+}
+
+:root[data-font-size='xlarge'] {
+  font-size: 136%;
+}
+
+/* Accessibility: high contrast — stronger borders and text, and removes
+   the subtle tinted backgrounds (active states, banners) in favor of
+   solid color + border so state is never conveyed by a faint tint alone. */
+:root[data-contrast='high'] {
+  --color-bg: #ffffff;
+  --color-text: #000000;
+  --color-muted: #3f3f3f;
+  --color-border: #000000;
+}
+
+:root[data-contrast='high'] .option-card,
+:root[data-contrast='high'] .icon-select-trigger,
+:root[data-contrast='high'] input,
+:root[data-contrast='high'] select,
+:root[data-contrast='high'] textarea,
+:root[data-contrast='high'] .card,
+:root[data-contrast='high'] .document-item,
+:root[data-contrast='high'] .confirm-card {
+  border-width: 2px;
+}
+
+:root[data-contrast='high'] .option-card-active,
+:root[data-contrast='high'] .icon-select-option-active {
+  background: var(--color-primary);
+  color: white;
+}
+
+:root[data-contrast='high'] .sidebar-item-active {
+  background: var(--color-primary);
+  color: white;
+}
+
+/* Accessibility: larger touch targets — toggled as a class (not an
+   attribute) since AccessibilityContext sets it with classList.toggle. */
+.a11y-large-targets .btn {
+  padding: 13px 20px;
+  font-size: 1.05em;
+}
+
+.a11y-large-targets input,
+.a11y-large-targets select,
+.a11y-large-targets textarea,
+.a11y-large-targets .icon-select-trigger {
+  padding: 13px 14px;
+  min-height: 48px;
+}
+
+.a11y-large-targets .option-card {
+  padding: 16px 14px;
+  min-height: 56px;
+}
+
+.a11y-large-targets .navbar-icon-btn,
+.a11y-large-targets .mic-btn {
+  width: 48px;
+  height: 48px;
+}
+
+/* Motion */
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Every `animation: fadeInUp ...` use in this file deliberately omits the
+   `both`/`forwards` fill-mode. Any non-`none` transform value creates a new
+   CSS stacking context, and `both`/`forwards` keeps this animation's final
+   `transform: translateY(0)` applied to the element FOREVER after it
+   finishes — silently turning something as ordinary as `.card` into a
+   stacking context. That trapped a dropdown's `z-index` inside its own
+   card once (IconSelect's list rendered behind the next sibling card,
+   only visible with real content below it — see git history), which is a
+   nasty bug to chase since it only reproduces with the right DOM around
+   it. Dropping the fill-mode restores default behavior (`transform`
+   reverts to `none` once the animation ends) with no visible difference,
+   since a CSS animation on mount starts before first paint. */
+
+@keyframes urgentPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.25); }
+  50% { box-shadow: 0 0 0 6px rgba(220, 38, 38, 0); }
+}
+
+/* .error-banner's entrance — a firm "no" without being cartoonish: small
+   enough to read as an emphasis cue, not a gimmick. Ends at 0 (no lingering
+   transform), same stacking-context reasoning as the note above. */
+@keyframes shake {
+  10%, 90% { transform: translateX(-1px); }
+  20%, 80% { transform: translateX(2px); }
+  30%, 50%, 70% { transform: translateX(-4px); }
+  40%, 60% { transform: translateX(4px); }
+  100% { transform: translateX(0); }
+}
+
+/* .info-banner's entrance — a small confirming "pop" for success messages. */
+@keyframes popIn {
+  0% { opacity: 0; transform: scale(0.92); }
+  60% { opacity: 1; transform: scale(1.02); }
+  100% { transform: scale(1); }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.spinner-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--color-muted);
+  font-size: 14px;
+}
+
+.spinner {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 2.5px solid #e2e8f0;
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

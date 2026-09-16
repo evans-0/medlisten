@@ -1,0 +1,9 @@
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+python-multipart==0.0.20
+python-dotenv==1.0.1
+faster-whisper==1.1.1
+# faster-whisper's utils module imports this directly but doesn't declare it
+# as a dependency in this version — pin explicitly rather than rely on it
+# being pulled in transitively by something else.
+requests==2.32.3

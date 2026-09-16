@@ -1,0 +1,19 @@
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+python-dotenv==1.0.1
+# Calls transliterate-service for romanized (Latin-script) input — already
+# pulled in transitively by huggingface_hub, pinned explicitly for clarity.
+requests==2.34.2
+
+# --- IndicTrans2 translation backend (optional — see README) ---
+# torch is deliberately NOT pinned here: install the CPU-only build yourself
+# first with the command in README.md (the default PyPI wheel on Windows
+# pulls in a multi-GB CUDA runtime we don't want — this service runs on CPU
+# so it doesn't compete with Ollama for VRAM, same reasoning as voice-service).
+transformers==4.46.3
+sentencepiece==0.2.2
+# Pre/post-processing IndicTrans2's models expect (script normalization,
+# sentence splitting). Ships a Cython extension with no prebuilt Windows
+# wheel — installing this on Windows requires the Microsoft C++ Build
+# Tools first (see README.md). No such requirement on macOS/Linux.
+IndicTransToolkit==1.1.1

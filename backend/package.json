@@ -1,0 +1,33 @@
+{
+  "name": "sih-patient-dashboard-backend",
+  "version": "1.0.0",
+  "description": "Backend API for the Patient Case-Taking / MedListen dashboard (SIH26047 core MVP)",
+  "main": "src/server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch-path=src src/server.js",
+    "seed:doctor": "node src/utils/seedDoctor.js",
+    "db:dev": "node scripts/dev-mongo.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "canvas": "^3.2.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "helmet": "^7.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mammoth": "^1.12.3",
+    "mongoose": "^8.5.0",
+    "morgan": "^1.10.0",
+    "multer": "^2.0.0",
+    "pdf-parse": "^1.1.1",
+    "pdfjs-dist": "^3.11.174",
+    "qrcode-terminal": "^0.12.0",
+    "tesseract.js": "^7.0.0"
+  },
+  "devDependencies": {
+    "mongodb-memory-server": "^11.2.0"
+  }
+}
