@@ -6,7 +6,10 @@ A patient records dashboard built as the foundation for SIH Problem Statement 26
 - Patient registration/login with a (mocked) 14-digit ABHA ID + password
 - Patient dashboard: editable structured medical history, document upload
 - Document extraction: uploaded images (JPEG/PNG/WEBP) go through a local
-  Ollama vision model (`medgemma:4b`, medical-domain-tuned) that returns a
+  Ollama vision model (`medgemma:4b`, medical-domain-tuned) by default, with
+  an optional Groq cloud vision fallback (`OCR_USE_GROQ=true`, same
+  `qwen/qwen3.8-27b` model as chat below) for tougher real-world
+  handwriting. Either way it returns a
   **structured** extraction — diagnoses, presenting complaints, vitals,
   medications (name/dosage/frequency), investigations (value/reference
   range/abnormal flag), procedures, plus a confidence score per field and a
@@ -16,14 +19,20 @@ A patient records dashboard built as the foundation for SIH Problem Statement 26
   PDFs aren't handled yet — that needs a PDF→image render step, listed below
   as a follow-up. The extraction schema/prompt design (confidence-per-field,
   presenting-complaints-vs-diagnosis separation, abnormal only ever read off
-  a printed reference range) is ported from a teammate's `ocr-module` in the
+  a printed reference range) is ported from my own `ocr-module` in the
   team's broader SIH2026 prototype, which arrived at this design through
   real testing.
 - Conversational intake chatbot: the patient chats in plain language
-  ("I've had a headache since yesterday") and a local Ollama chat model
-  (`qwen2.5:14b`) fills in a structured history live, one question at a
-  time, while the patient watches a "Captured so far" panel update turn by
-  turn. History-of-present-illness questioning follows SOCRATES (Site,
+  ("I've had a headache since yesterday") and a chat model fills in a
+  structured history live, one question at a time, while the patient
+  watches a "Captured so far" panel update turn by turn. By default this
+  runs on Groq's cloud API (`qwen/qwen3.8-27b`), chosen after local
+  14B-class inference on a 12GB-VRAM laptop GPU proved too slow and
+  inconsistent for real use — real logged turns measured 15-200+ seconds
+  locally, vs. Groq's dedicated hardware being both faster and far more
+  consistent. With no `GROQ_API_KEY` set it falls back to a local Ollama
+  model (`qwen3:14b`) instead — see Prerequisites below for both paths.
+  History-of-present-illness questioning follows SOCRATES (Site,
   Onset, Character, Radiation, Associated symptoms, Timing,
   Exacerbating/relieving, Severity) for a regular visit — but for an AYUSH
   (Ayurveda) visit, SOCRATES is replaced entirely by the Dashavidha Pariksha
@@ -42,7 +51,7 @@ A patient records dashboard built as the foundation for SIH Problem Statement 26
   both stay visible as separate episodes rather than one overwriting the
   other. This chat engine (schema, prompts, safety net, RAG design, and the
   retry/fallback logic for when a local model leaves a turn malformed) is
-  ported from a teammate's `converse-module` in the SIH2026 prototype. When
+  ported from my own `converse-module` in the SIH2026 prototype. When
   a visit ends (naturally, red-flagged, or the patient ends it themselves)
   its genuinely-cumulative fields — past history, allergies, family
   history, current medications — get merged into `MedicalHistory` too, so
@@ -53,11 +62,18 @@ A patient records dashboard built as the foundation for SIH Problem Statement 26
 - Multilingual chat: the patient can choose English, Hindi, Bengali,
   Telugu, Marathi, Tamil, Gujarati, Kannada, Malayalam, Punjabi, Urdu, or
   Odia when starting a conversation, and the chat happens in that
-  language. Under the hood, `qwen2.5:14b` never actually sees or produces
+  language. Under the hood, the chat model never actually sees or produces
   anything but English — a separate local translation service
   (`translate-service/`, AI4Bharat's IndicTrans2) translates the patient's
   message to English before the LLM sees it, and translates the LLM's
-  question back to the patient's language before they see it. This
+  question back to the patient's language before they see it. Patients
+  without a native-script keyboard often type romanized/Latin-script input
+  instead (Hinglish, Tanglish, etc.) — IndicTrans2 expects native script
+  and otherwise mostly passes romanized text through untranslated, so a
+  separate transliteration step (`transliterate-service/`, AI4Bharat's
+  IndicXlit) converts it to native script first; see
+  `transliterate-service/README.md` for why that's a second, independent
+  service rather than folded into `translate-service`. This
   replaced an earlier design where the chat LLM was asked to converse
   directly in the target language itself; splitting the language switch
   into its own step let the chat model focus on clinical reasoning and
@@ -92,7 +108,7 @@ A patient records dashboard built as the foundation for SIH Problem Statement 26
      local `faster-whisper` model (CPU-only, so it doesn't compete with
      Ollama's GPU usage) — genuinely local, no audio leaves the machine.
      Runs as a separate small Python service (`voice-service/`), ported
-     from a teammate's `voice-module` in the SIH2026 prototype; the Node
+     from my own `voice-module` in the SIH2026 prototype; the Node
      backend proxies to it so nothing about the phone-facing API surface
      changes.
 
@@ -112,21 +128,31 @@ foundation is in place.
 
 - Backend: Node.js, Express, MongoDB (Mongoose), JWT auth, Multer, pdf-parse
 - Document extraction: [Ollama](https://ollama.com) running `medgemma:4b`
-  (a medical-domain vision model) locally
-- Conversational intake: Ollama running `qwen2.5:14b` (chat) and
-  `nomic-embed-text` (RAG retrieval) locally
+  (a medical-domain vision model) locally by default, with an optional Groq
+  cloud vision fallback (`OCR_USE_GROQ=true`, same `qwen/qwen3.8-27b` model
+  as chat below) for tougher real-world handwriting
+- Conversational intake: [Groq](https://console.groq.com)'s cloud API
+  running `qwen/qwen3.8-27b` (chat) by default, falling back to a local
+  Ollama model (`qwen3:14b`) when no `GROQ_API_KEY` is set; RAG retrieval
+  always uses `nomic-embed-text` locally via Ollama regardless of which
+  chat backend is active
 - Voice input: browser-native Web Speech API (live, preferred), falling back to
   Python + FastAPI + `faster-whisper` (`voice-service/`, CPU-only) when unavailable
 - Translation: Python + FastAPI + AI4Bharat's IndicTrans2 (`translate-service/`,
   CPU-only) for non-English chat visits
+- Transliteration: Python + Flask + AI4Bharat's IndicXlit
+  (`transliterate-service/`, Python 3.7, CPU-only) — converts romanized
+  (Latin-script) input to native script before translation
 - Frontend: React (Vite), React Router, Axios
 
 ## Prerequisites
 
 - Node.js 18+
-- [Ollama](https://ollama.com) installed and running, with the vision model pulled:
+- [Ollama](https://ollama.com) installed and running, for document OCR and
+  the RAG embedding model (and optionally chat too — see below):
   ```bash
   ollama pull medgemma:4b
+  ollama pull nomic-embed-text
   ```
   The backend calls `http://localhost:11434` by default (configurable via
   `OLLAMA_HOST`/`OLLAMA_VISION_MODEL`/`OLLAMA_TEXT_MODEL` in `.env`). If
@@ -136,20 +162,36 @@ foundation is in place.
   supports its `mllama` architecture — on this dev setup it reproducibly
   didn't (`error loading model: unknown model architecture: 'mllama'`, from
   both the CLI and the API), which is why `medgemma:4b` is the default.
-  Also pull the chatbot's models:
-  ```bash
-  ollama pull qwen2.5:14b
-  ollama pull nomic-embed-text
-  ```
-  **VRAM note:** on a 12GB GPU, `qwen2.5:14b` (~10GB) and `medgemma:4b`
-  (~3GB) cannot both stay loaded at once — confirmed empirically, and not
-  fixable by lowering `OLLAMA_CHAT_NUM_CTX`, since it's the base model
-  weights that don't fit, not the context window. Ollama automatically
-  swaps one out to load the other, which works correctly but costs a real
-  ~8-13s reload delay whenever a patient switches between chatting and
-  uploading a document. Not fixed here; the fix, if it matters for your
-  demo, is a smaller chat model (7-8B class) — ask if you want that
-  explored.
+  Documents can instead go through Groq's cloud vision model (see below) by
+  setting `OCR_USE_GROQ=true` in `.env` — useful when local OCR struggles
+  with messy handwriting; confirmed on a real prescription to extract
+  correctly where `medgemma:4b` misread values.
+- Chat model — pick one:
+  - **Groq (recommended, default)** — get a free API key at
+    [console.groq.com](https://console.groq.com) and set it as
+    `GROQ_API_KEY` in `backend/.env`. Runs chat on `qwen/qwen3.8-27b` in the
+    cloud; chosen after local 14B-class inference on a 12GB-VRAM laptop GPU
+    proved too slow and inconsistent for real use (real logged turns
+    measured 15-200+ seconds locally, vs. Groq's dedicated hardware being
+    both faster and far more consistent). The free tier is rate-limited
+    (roughly 4 requests/minute for this model) — the backend self-paces
+    every outbound Groq call to stay under that instead of reactively
+    retrying after a 429 (see `GROQ_MIN_INTERVAL_MS` in `.env`).
+  - **Local Ollama (fallback)** — used automatically when `GROQ_API_KEY` is
+    left empty:
+    ```bash
+    ollama pull qwen3:14b
+    ```
+    Leave `OLLAMA_CHAT_THINK=true` in `.env` (the default) — this model's
+    accuracy gain over `qwen2.5:14b` comes entirely from thinking mode.
+    **VRAM note:** on a 12GB GPU, `qwen3:14b` (~10GB) and `medgemma:4b`
+    (~3GB) cannot both stay loaded at once — confirmed empirically, and not
+    fixable by lowering `OLLAMA_CHAT_NUM_CTX`, since it's the base model
+    weights that don't fit, not the context window. Ollama automatically
+    swaps one out to load the other, which works correctly but costs a real
+    ~8-13s reload delay whenever a patient switches between chatting and
+    uploading a document — one more reason Groq is the default above, since
+    it removes chat entirely from that VRAM budget.
 - Python 3.9+ (for the voice and translation services — see their own setup below)
 - A MongoDB instance — one of:
   - Install [MongoDB Community Server](https://www.mongodb.com/try/download/community) locally
@@ -247,6 +289,30 @@ and design notes. The Node backend finds this service at
 `http://localhost:8020` by default (`TRANSLATE_SERVICE_URL` in
 `backend/.env`).
 
+## Transliteration service setup
+
+Optional — only matters if a patient might type in romanized/Latin script
+(Hinglish, Tanglish, etc.) instead of native script during a non-English
+visit. Without it, `translate-service` still runs fine; romanized input is
+just passed through untranslated instead of being converted to native
+script first (see `transliterate-service/README.md`'s "Why this exists").
+
+Requires **Python 3.7 specifically** (its IndicXlit dependency doesn't
+build on Python 3.9+):
+
+```bash
+cd transliterate-service
+py -3.7 -m venv .venv          # or point at a Python 3.7 install directly
+.venv\Scripts\activate         # macOS/Linux: source .venv/bin/activate
+pip install -r requirements.txt
+python app/main.py
+```
+
+Runs on port 8030 by default. First request after startup downloads the
+IndicXlit model (a few hundred MB) — every request after that is fast. See
+`transliterate-service/README.md` for the full story on why this needs its
+own separate, older Python environment from `translate-service`.
+
 ## Frontend setup
 
 ```bash
@@ -260,7 +326,7 @@ Opens on `http://localhost:5173`, proxying `/api` to the backend.
 ## Trying it out
 
 1. Register a patient with any 14-digit ABHA ID (e.g. `12345678901234`) and a password.
-2. From the patient dashboard, click **Start conversation** under "Talk to MedListen", optionally pick a language, and describe a symptom (e.g. "I've had a headache since yesterday") — either by typing or tapping the mic button — and watch the "Captured so far" panel fill in as you keep chatting. Picking a language other than English requires `translate-service` to be running (see above).
+2. From the patient dashboard, click **Start conversation** under "Talk to MedListen", optionally pick a language, and describe a symptom (e.g. "I've had a headache since yesterday") — either by typing or tapping the mic button — and watch the "Captured so far" panel fill in as you keep chatting. Picking a language other than English requires `translate-service` to be running (see above), and `transliterate-service` too if you type in romanized script.
 3. Fill in medical history and upload a document (PDF/JPEG/PNG/WEBP).
 4. Register a doctor account, log in, and search by the same ABHA ID to view that patient's history, visit timeline, and documents.
 
